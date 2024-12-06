@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { dbConnect } from "./configs/db.configs.js";
 import userRoute from "./src/routes/user.routes.js";
+import productRoute from "./src/routes/product.routes.js";
 import { ErrorMiddleware } from "./src/middlewares/Error.middleware.js";
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(
 // Routes
 
 app.use("/app/v1/user", userRoute);
+app.use("/app/v1/product", productRoute);
 
 // global erro middleware
 app.use(ErrorMiddleware);
