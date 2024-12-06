@@ -40,7 +40,7 @@ export const ErrorMiddleware = (err, req, res, next) => {
   // jwt expire
   if (err.name === "TokenExpiredError") {
     errCode = 401;
-    errMsg = "Your token has expired. Please log in again.";
+    errMsg = "Your token has expired. Please logIn again.";
   }
 
   return res.status(errCode).json({

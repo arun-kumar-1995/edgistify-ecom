@@ -29,6 +29,7 @@ export const isAuthenticated = async (req, res, next) => {
     next();
   } catch (err) {
     console.log(err.message);
-    return ErrorHandler(res, 401, "Invalid token");
+    // return ErrorHandler(res, 401, "Invalid token");
+    next(err)
   }
 };

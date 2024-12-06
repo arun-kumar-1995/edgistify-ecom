@@ -13,7 +13,7 @@ const schema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    imageUrl: {
+    image: {
       type: String,
       trim: true,
     },
