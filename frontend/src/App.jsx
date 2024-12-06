@@ -10,31 +10,28 @@ const Cart = lazy(() => import("./pages/Cart"));
 
 const App = () => {
   return (
-    <>
-      <Suspense fallback={true}>
-        <Router>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/sign-in" element={<SignIn />} />
-            <Route path="/sign-up" element={<SignUp />} />
+    <Suspense fallback={true}>
+      <Router>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
 
-            {/* Protected routes */}
-            <Route
-              path="/*"
-              element={
-                <ProtectedRoute>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/cart" element={<Cart />} />
-                  
-                  </Routes>
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </Router>
-      </Suspense>
-    </>
+          {/* Protected routes */}
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/cart" element={<Cart />} />
+                </Routes>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </Suspense>
   );
 };
 
