@@ -1,6 +1,7 @@
 import { CatchAsyncError } from "../middlewares/CatchAsyncError.middleware.js";
 import { User } from "../models/user.models.js";
 import { comparePassword, hashPassword } from "../services/bcrypt.services.js";
+import { generateToken } from "../services/jwt.services.js";
 import { ApiResponse } from "../utils/apiResponse.utils.js";
 import { ErrorHandler } from "../utils/ErrorHandler.utils.js";
 
@@ -33,9 +34,10 @@ export const login = CatchAsyncError(async (req, res, next) => {
     return ErrorHandler(res, 400, "User with this email doesn't exist");
 
   const match = await comparePassword(password, user.password);
-  if (!match) return ErrorHandler(res, "Invalid credentials entered");
+  if (!match) return ErrorHandler(res, 401, "Invalid credentials entered");
 
-  ApiResponse(res, 200, "You are logged in", { user });
+  const token = generateToken({ _id: user._id });
+  ApiResponse(res, 200, "You are logged in", { user, token });
 });
 
 export const logout = async () => {

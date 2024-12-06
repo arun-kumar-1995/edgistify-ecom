@@ -24,6 +24,25 @@ export const ErrorMiddleware = (err, req, res, next) => {
     const fieldNames = Object.values(err.errors).map((err) => err.path);
     errMsg = `${fieldNames.join(", ")} is required.`;
   }
+
+  // MongoDB connection errors
+  if (err.name === "MongoNetworkError") {
+    errCode = 503;
+    errMsg = "Unable to connect to the database. Please try again later.";
+  }
+
+  // invalid jwt error
+  if (err.name === "JsonWebTokenError") {
+    errCode = 401;
+    errMsg = "Invalid token. Please log in again.";
+  }
+
+  // jwt expire
+  if (err.name === "TokenExpiredError") {
+    errCode = 401;
+    errMsg = "Your token has expired. Please log in again.";
+  }
+
   return res.status(errCode).json({
     success: false,
     status: errCode,
