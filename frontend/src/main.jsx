@@ -5,7 +5,7 @@ import "./styles/reset.css";
 import "./styles/index.css";
 
 import App from "./App.jsx";
-import { ToastProvider } from "./contexts/ToastContexts";
+import { ToastProvider } from "./contexts/ToastContexts.jsx";
 
 createRoot(document.getElementById("root")).render(
   <ToastProvider>
