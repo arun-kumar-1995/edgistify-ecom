@@ -56,7 +56,6 @@ html {
 
 body {
   font-family: var(--font-family);
-  line-height: 1.423;
-  color: #121212;
+  line-height: 1.42;
   background-color: var(--clr-bg);
 }
