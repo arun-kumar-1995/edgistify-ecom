@@ -1,3 +1,5 @@
+import { Layout } from "../hoc/Layout";
+
 const Home = () => {
   return (
     <div className="home">
@@ -6,4 +8,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Layout(Home);
