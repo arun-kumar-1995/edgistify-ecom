@@ -95,6 +95,13 @@
   color: var(--clr-secondary);
 }
 
+table .product-price {
+  font-weight: 600;
+}
+table p.product-total {
+  color: var(--clr-danger);
+}
+
 .product-control {
   display: flex;
   align-items: center;
@@ -193,6 +200,6 @@
   border: 1px solid var(--clr-info);
 }
 
-
 /* media queries */
-@media (max-width: 768px) {}
+@media (max-width: 768px) {
+}

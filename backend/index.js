@@ -27,7 +27,7 @@ app.use(
 
 // Routes
 
-app.use("/app/v1/user", userRoute);
+app.use("/app/v1/account", userRoute);
 app.use("/app/v1/product", productRoute);
 
 // global erro middleware

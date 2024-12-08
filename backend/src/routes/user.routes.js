@@ -3,9 +3,8 @@ import { register, login, logout } from "../controllers/user.controllers.js";
 
 const router = express.Router();
 
-router.route("/signUp").post(register);
-router.route("/signIn").post(login);
-router.route("/signOut").post(logout);
-
+router.route("/register").post(register);
+router.route("/login").post(login);
+router.route("/logout").post(logout);
 
 export default router;

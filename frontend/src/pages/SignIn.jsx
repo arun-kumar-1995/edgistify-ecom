@@ -34,7 +34,7 @@ const SignIn = () => {
               <label htmlFor="email">Email</label>
               <input
                 type="text"
-                placeholder="Enter username"
+                placeholder="Enter email"
                 value={loginInput.email}
                 name="email"
                 onChange={handleLoginInput}
