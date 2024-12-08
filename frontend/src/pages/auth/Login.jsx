@@ -1,20 +1,41 @@
 import { useEffect, useState, useCallback } from "react";
-import "../styles/form.css";
-import logo from "/assets/logo.jpg";
-import { Link } from "react-router-dom";
-import { FaRegUser } from "react-icons/fa6";
-import { MdLockOutline } from "react-icons/md";
+import "./form.css";
 
-const SignIn = () => {
+import { Link } from "react-router-dom";
+import { login } from "../../features/auth/authAPI";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "../../contexts/ToastContexts";
+
+const Login = () => {
+  const { loading } = useSelector((state) => state.auth);
+
   const [loginInput, setLoginInput] = useState({ email: "", password: "" });
+
+  const toast = useToast();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLoginInput = useCallback((e) => {
     const { name, value } = e.target;
     setLoginInput((prev) => ({ ...prev, [name]: value }));
   }, []);
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
+
+    const { email, password } = loginInput;
+    if (!email || !password)
+      return toast.error("Both email and password must be provided");
+
+    try {
+      const response = await dispatch(login(loginInput)).unwrap();
+      toast.success(response.message);
+      navigate("/");
+      return;
+    } catch (err) {
+      return toast.error(err);
+    }
   };
 
   return (
@@ -25,7 +46,7 @@ const SignIn = () => {
             <h2>Sign In !</h2>
             <p>
               Are you new here?
-              <Link to="/sign-up">SignUp</Link>
+              <Link to="/account/register">SignUp</Link>
             </p>
           </div>
 
@@ -39,6 +60,7 @@ const SignIn = () => {
                 name="email"
                 onChange={handleLoginInput}
                 required
+                autoComplete="on"
               />
             </div>
             <div className="form-group">
@@ -51,9 +73,12 @@ const SignIn = () => {
                 name="password"
                 onChange={handleLoginInput}
                 required
+                autoComplete="off"
               />
             </div>
-            <button type="submit">Submit</button>
+            <button type="submit" disabled={loading}>
+              {loading ? "Checking..." : "Submit"}
+            </button>
           </div>
         </form>
       </div>
@@ -61,4 +86,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Login;

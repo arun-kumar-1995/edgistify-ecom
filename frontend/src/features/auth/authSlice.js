@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { register } from "./authAPI";
+import { register, login } from "./authAPI";
 
 const authSlice = createSlice({
   name: "auth",
@@ -27,6 +27,23 @@ const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Registration failed.";
+      })
+
+      .addCase(login.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(login.fulfilled, (state, action) => {
+        console.log(state.isAuthenticated, action.payload);
+        state.loading = false;
+        state.isAuthenticated = true;
+        state.user = action.payload?.data?.user;
+      })
+
+      .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Login failed";
       });
   },
 });

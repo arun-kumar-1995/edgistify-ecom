@@ -23,9 +23,9 @@ export const AsyncThunkWrapper = (thunkName, configs) => {
         withCredentials,
         ...requestConfigs,
       });
-
+      console.log(response.data);
       if (response.data?.success === true) {
-        return response.data; 
+        return response.data;
       }
 
       // Handle unsuccessful responses

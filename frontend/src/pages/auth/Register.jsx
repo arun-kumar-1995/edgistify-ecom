@@ -1,12 +1,12 @@
 import { useEffect, useState, useCallback } from "react";
-import "../styles/form.css";
+import "./form.css";
 import { Link } from "react-router-dom";
-import { register } from "../features/auth/authAPI";
+import { register } from "../../features/auth/authAPI";
 import { useDispatch, useSelector } from "react-redux";
-import { useToast } from "../contexts/ToastContexts";
+import { useToast } from "../../contexts/ToastContexts";
 import { useNavigate } from "react-router-dom";
-const SignUp = () => {
-  const { loading, error: apiError } = useSelector((state) => state.auth);
+const Register = () => {
+  const { loading } = useSelector((state) => state.auth);
 
   const [formInput, setformInput] = useState({
     fullName: "",
@@ -39,7 +39,7 @@ const SignUp = () => {
       navigate("/sign-in");
       return toast.success(response.message);
     } catch (err) {
-      return toast.error(err.message);
+      return toast.error(err);
     }
   };
 
@@ -51,7 +51,7 @@ const SignUp = () => {
             <h2>Sign Up !</h2>
             <p>
               Already have an account?
-              <Link to="/sign-in">SignIn</Link>
+              <Link to="/account/login">SignIn</Link>
             </p>
           </div>
 
@@ -114,4 +114,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Register;

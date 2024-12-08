@@ -4,8 +4,8 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 
 // lazy imports
 const Home = lazy(() => import("./pages/Home/Home"));
-const SignIn = lazy(() => import("./pages/SignIn"));
-const SignUp = lazy(() => import("./pages/SignUp"));
+const Login = lazy(() => import("./pages/auth/Login"));
+const Register = lazy(() => import("./pages/auth/Register"));
 const Cart = lazy(() => import("./pages/Cart/Cart"));
 
 const App = () => {
@@ -14,8 +14,8 @@ const App = () => {
       <Router>
         <Routes>
           {/* Public routes */}
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/account/login" element={<Login />} />
+          <Route path="/account/register" element={<Register />} />
 
           {/* Protected routes */}
           <Route
