@@ -1,5 +1,5 @@
-import { Layout } from "../hoc/Layout";
-import "../styles/Cart.css";
+import { Layout } from "../../hoc/Layout";
+import "./Cart.css";
 import cartItem from "/assets/logo.jpg";
 import { Link } from "react-router-dom";
 

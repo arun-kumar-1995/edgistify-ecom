@@ -1,5 +1,5 @@
-import { Layout } from "../hoc/Layout";
-import "../styles/Home.css";
+import { Layout } from "../../hoc/Layout";
+import "./Home.css";
 
 const products = [
   {

@@ -1,8 +1,7 @@
 import { createRoot } from "react-dom/client";
 
 // styles
-import "./styles/reset.css";
-import "./styles/index.css";
+import "./index.css";
 
 import App from "./App.jsx";
 import { ToastProvider } from "./contexts/ToastContexts.jsx";

@@ -1,3 +1,11 @@
+/* 
+
+This file holds the global reset for the element that ar mantatory
+
+Reset and normalize 
+
+*/
+
 *,
 *::before,
 *::after {
@@ -10,44 +18,24 @@
   vertical-align: baseline;
 }
 
+/* Inputs and Buttons */
+
+button,
 input,
-button {
+select,
+textarea {
   font: inherit;
-  border: none;
-  outline: none;
+  margin: 0;
 }
 
+/* Links */
 a {
   text-decoration: none;
   color: inherit;
 }
 
-img,
-picture,
-video,
-canvas {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-li {
-  list-style-type: none;
-}
-
-button:hover {
-  cursor: pointer;
-}
-
-a,
-span,
-label {
-  font-size: 1.2rem;
-}
-
-button,
-input {
-  background: transparent;
-  border: none;
-  outline: none;
+/* LISTS */
+ul,
+ol {
+  list-style: none;
 }

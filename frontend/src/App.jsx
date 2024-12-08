@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
 // lazy imports
-const Home = lazy(() => import("./pages/Home"));
+const Home = lazy(() => import("./pages/Home/Home"));
 const SignIn = lazy(() => import("./pages/SignIn"));
 const SignUp = lazy(() => import("./pages/SignUp"));
-const Cart = lazy(() => import("./pages/Cart"));
+const Cart = lazy(() => import("./pages/Cart/Cart"));
 
 const App = () => {
   return (

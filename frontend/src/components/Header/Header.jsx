@@ -1,6 +1,6 @@
 import logo from "/assets/logo.jpg";
 import { Link } from "react-router-dom";
-import "../../styles/Header.css";
+import "./Header.css";
 import { MdShoppingCart } from "react-icons/md";
 
 export const Header = () => {
