@@ -1,9 +1,15 @@
 import { CatchAsyncError } from "../middlewares/CatchAsyncError.middleware.js";
 import { User } from "../models/user.models.js";
 import { comparePassword, hashPassword } from "../services/bcrypt.services.js";
-import { generateAccessToken, generateRefreshToken, generateToken } from "../services/jwt.services.js";
+
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../services/jwt.services.js";
+
 import { ApiResponse } from "../utils/apiResponse.utils.js";
 import { ErrorHandler } from "../utils/ErrorHandler.utils.js";
+import { SendRefreshToken } from "../utils/sendRefreshToken.utils.js";
 
 // auth controller
 export const register = CatchAsyncError(async (req, res, next) => {
@@ -37,16 +43,17 @@ export const login = CatchAsyncError(async (req, res, next) => {
   const match = await comparePassword(password, user.password);
   if (!match) return ErrorHandler(res, 401, "Invalid credentials entered");
 
-  const token = generateToken({ _id: user._id });
+  // generate tokens
+  const accessToken = generateAccessToken({ _id: user._id });
+  const refreshToken = generateRefreshToken({ _id: user._id });
 
-// generate tokens
-const accessToken = await generateAccessToken({_id: user._id});
-const refreshToken = await generateRefreshToken({_id:user._id});
-// send refesh token in cookie and access token in response
+  // send refesh token in cookie and access token in response
+  SendRefreshToken(refreshToken);
 
+  // send api response
   ApiResponse(res, 200, "You are logged in", {
     user: { name: user.fullName, email: user.email, id: user._id },
-    token,
+    token: accessToken,
   });
 });
 

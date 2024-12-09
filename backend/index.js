@@ -1,14 +1,18 @@
-import dotenv from "dotenv/config";
+// load env variables
+import "./configs/loadEnv.config.js";
+
+// imports
+// import dotenv from "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { dbConnect } from "./configs/db.configs.js";
 import { ErrorMiddleware } from "./src/middlewares/Error.middleware.js";
+import { getEnvVariable } from "./src/utils/envHelpers.utils.js";
+import { ValidateServerPort } from "./src/utils/validatePort.utils.js";
 
 const app = express();
 
-const { PORT = 800 } = process.env;
-const port = parseInt(PORT);
-
+const APP_PORT = getEnvVariable("APP_PORT", "Missing Env variable APP_PORT");
 // Middleware
 
 app.use(express.json());
@@ -41,15 +45,15 @@ app.use(ErrorMiddleware);
 export const startServer = async () => {
   try {
     // validating port
-    if (!port || port > 65535) {
-      throw new Error("Missing environment variable: [PORT]");
-    }
+    const port = ValidateServerPort(APP_PORT);
 
     await dbConnect();
 
     // listnig to server
-    app.listen(PORT, () => {
-      console.log("[Server Listning] : " + port);
+    app.listen(port, () => {
+      console.log(
+        `Server Started \n NODE_ENV:${process.env.NODE_ENV} \nPORT: ${port}`
+      );
     });
   } catch (err) {
     console.error("Failed to start the server:", err.message);
