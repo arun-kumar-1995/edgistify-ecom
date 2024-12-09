@@ -1,10 +1,11 @@
 import { CatchAsyncError } from "../middlewares/CatchAsyncError.middleware.js";
 import { User } from "../models/user.models.js";
 import { comparePassword, hashPassword } from "../services/bcrypt.services.js";
-import { generateToken } from "../services/jwt.services.js";
+import { generateAccessToken, generateRefreshToken, generateToken } from "../services/jwt.services.js";
 import { ApiResponse } from "../utils/apiResponse.utils.js";
 import { ErrorHandler } from "../utils/ErrorHandler.utils.js";
 
+// auth controller
 export const register = CatchAsyncError(async (req, res, next) => {
   const { fullName, email, password } = req.body;
 
@@ -37,7 +38,16 @@ export const login = CatchAsyncError(async (req, res, next) => {
   if (!match) return ErrorHandler(res, 401, "Invalid credentials entered");
 
   const token = generateToken({ _id: user._id });
-  ApiResponse(res, 200, "You are logged in", { user, token });
+
+// generate tokens
+const accessToken = await generateAccessToken({_id: user._id});
+const refreshToken = await generateRefreshToken({_id:user._id});
+// send refesh token in cookie and access token in response
+
+  ApiResponse(res, 200, "You are logged in", {
+    user: { name: user.fullName, email: user.email, id: user._id },
+    token,
+  });
 });
 
 export const logout = async () => {

@@ -2,8 +2,6 @@ import dotenv from "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { dbConnect } from "./configs/db.configs.js";
-import userRoute from "./src/routes/user.routes.js";
-import productRoute from "./src/routes/product.routes.js";
 import { ErrorMiddleware } from "./src/middlewares/Error.middleware.js";
 
 const app = express();
@@ -27,8 +25,13 @@ app.use(
 
 // Routes
 
-app.use("/app/v1/account", userRoute);
-app.use("/app/v1/product", productRoute);
+import authRoutes from "./src/routes/auth.routes.js";
+import userRoute from "./src/routes/user.routes.js";
+import productRoute from "./src/routes/product.routes.js";
+
+app.use("/app/auth", authRoutes);
+app.use("/app/user", userRoute);
+app.use("/app/product", productRoute);
 
 // global erro middleware
 app.use(ErrorMiddleware);
