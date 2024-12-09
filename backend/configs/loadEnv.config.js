@@ -1,11 +1,8 @@
 import dotenv from "dotenv";
-
-import { fileURLToPath } from "url";
 import path from "path";
 
-// Recreate __dirname
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { getFilePaths } from "../src/utils/fileUtils.js";
+const { __filename, __dirname } = getFilePaths(import.meta.url);
 
 (() => {
   try {
@@ -21,7 +18,7 @@ const __dirname = path.dirname(__filename);
     // handle error
     if (error) {
       throw new Error(
-        `Failed to load env file for ${process.env.NODE_ENV}\n ${envResponse.error}`
+        `Failed to load env file for ${process.env.NODE_ENV}\n ${error}`
       );
     }
     console.log("Environment variables loaded");
