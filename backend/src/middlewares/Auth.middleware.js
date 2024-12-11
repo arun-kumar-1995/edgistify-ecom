@@ -1,35 +1,41 @@
 import { User } from "../models/user.models.js";
 import { ErrorHandler } from "../utils/ErrorHandler.utils.js";
 import { verifyToken } from "../services/jwt.services.js";
+import { getEnvVariable } from "../utils/envHelpers.utils.js";
+import { HttpCodes } from "../constants/HttpCodes.js";
 
 export const isAuthenticated = async (req, res, next) => {
-  let token = null;
-  //check for token in headers or cookies
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return ErrorHandler(res, 400, "Missing Authorization header", "isAuth");
   }
-  if (req?.cookies?.token) token = req.cookies.token;
+
+  // extract the token
+  const token = authHeader.split(" ")[1];
 
   if (!token) {
-    return ErrorHandler(res, 400, "Not authorized, token is missing");
+    return ErrorHandler(res, 401, "Must provide authorization token", "isAuth");
   }
 
   try {
     // Verify the token
-    const decoded = verifyToken(token);
+    const secretKey = getEnvVariable("ACCESS_TOKEN_SECRET");
+
+    const decoded = verifyToken(token, secretKey);
+    if (!decoded.success) {
+      const { statusCode, message, name } = decoded?.code;
+      return ErrorHandler(res, statusCode, message, name);
+    }
+
     // find user
-    const user = await User.findById(decoded).select("email fullName");
-    if (!user) return ErrorHandler(res, 400, "This user doesnot exists");
+    const user = await User.findById(decoded?.data?._id).select(
+      "-password -refreshToken"
+    );
 
+    if (!user) return ErrorHandler(res, 404, "User not found", "isAuth");
     req.user = user;
-
     next();
   } catch (err) {
-    console.log(err.message);
-    // return ErrorHandler(res, 401, "Invalid token");
-    next(err)
+    return ErrorHandler(res, 401, err.message, "ServerError");
   }
 };

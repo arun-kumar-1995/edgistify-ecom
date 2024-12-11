@@ -9,7 +9,7 @@ import { dbConnect } from "./configs/db.configs.js";
 import { ErrorMiddleware } from "./src/middlewares/Error.middleware.js";
 import { getEnvVariable } from "./src/utils/envHelpers.utils.js";
 import { ValidateServerPort } from "./src/utils/validatePort.utils.js";
-
+import cookieParser from "cookie-parser";
 const app = express();
 
 const APP_PORT = getEnvVariable("APP_PORT", "Missing Env variable APP_PORT");
@@ -17,6 +17,8 @@ const APP_PORT = getEnvVariable("APP_PORT", "Missing Env variable APP_PORT");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
 // cors middleware
 app.use(
   cors({
@@ -62,3 +64,14 @@ export const startServer = async () => {
 };
 
 startServer();
+
+// Global process-level error handling
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err.message);
+  console.error(err.stack);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection:", reason);
+});

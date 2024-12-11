@@ -18,6 +18,9 @@ const schema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    refreshToken: {
+      type: String,
+    },
     cart: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Cart",

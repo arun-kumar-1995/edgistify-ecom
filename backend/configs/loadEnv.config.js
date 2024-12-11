@@ -21,7 +21,7 @@ const { __filename, __dirname } = getFilePaths(import.meta.url);
         `Failed to load env file for ${process.env.NODE_ENV}\n ${error}`
       );
     }
-    console.log("Environment variables loaded");
+    // console.log("Environment variables loaded");
   } catch (err) {
     console.log(err.message);
     process.exit(1);
