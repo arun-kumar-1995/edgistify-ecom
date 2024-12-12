@@ -2,7 +2,7 @@ import { User } from "../models/user.models.js";
 import { ErrorHandler } from "../utils/ErrorHandler.utils.js";
 import { verifyToken } from "../services/jwt.services.js";
 import { getEnvVariable } from "../utils/envHelpers.utils.js";
-import { HttpCodes } from "../constants/HttpCodes.js";
+import { HttpCodes } from "../constants/httpCodes.constants.js";
 
 export const isAuthenticated = async (req, res, next) => {
   const authHeader = req.headers.authorization;

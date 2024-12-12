@@ -16,12 +16,14 @@ import { SendRefreshToken } from "../utils/sendRefreshToken.utils.js";
 // auth controller
 export const register = CatchAsyncError(async (req, res, next) => {
   const { fullName, email, password } = req.body;
+  if (!email || !password)
+    return ErrorHandler(res, 400, "Both Email and Password is required");
 
-  const isUser = await User.findOne({ email });
+  const isUser = await User.findOne({ email }).lean();
   if (isUser) return ErrorHandler(res, 200, "User already exists, Try login");
 
   // Hash the password
-  const hashedPassword = await hashPassword(password);
+  const hashedPassword = await hashPassword(res, password);
 
   // Create a new user
   const user = await User.create({
@@ -46,7 +48,7 @@ export const login = CatchAsyncError(async (req, res, next) => {
       `User with this email : ${email} doesn't exist`
     );
 
-  const match = await comparePassword(password, user.password);
+  const match = await comparePassword(res, password, user.password);
   if (!match) return ErrorHandler(res, 401, "Invalid credentials entered");
 
   // generate tokens
@@ -75,7 +77,7 @@ export const login = CatchAsyncError(async (req, res, next) => {
       email: user.email,
       id: user._id,
     },
-    token: accessToken.data,
+    token: accessToken?.data,
   });
 });
 
@@ -98,7 +100,7 @@ export const refreshAccessToken = CatchAsyncError(async (req, res, next) => {
   }
 
   // Find the user associated with the refresh token
-  const user = await User.findById(decoded?.data?._id);
+  const user = await User.findById(decoded?.data?._id).lean();
   if (!user) {
     return ErrorHandler(res, 403, "User not found");
   }
@@ -141,5 +143,8 @@ export const logout = CatchAsyncError(async (req, res, next) => {
     secure: process.env.NODE_ENV === "production",
   });
 
-  return ApiResponse(res, 200, "Successfully logged out", { user: {} });
+  return ApiResponse(res, 200, "Successfully logged out", {
+    user: {},
+    token: null,
+  });
 });

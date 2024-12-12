@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { getEnvVariable } from "../utils/envHelpers.utils.js";
-import { HttpCodes } from "../constants/HttpCodes.js";
+import { HttpCodes } from "../constants/httpCodes.constants.js";
 export const verifyToken = (token, secretKey) => {
   try {
     if (!token || !secretKey) {

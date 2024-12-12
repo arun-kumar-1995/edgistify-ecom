@@ -1,25 +1,26 @@
 import bcrypt from "bcrypt";
+import { ErrorHandler } from "../utils/ErrorHandler.utils.js";
+const SALT_ROUNDS = process.env.SALT_ROUNDS || 10;
 
-export const hashPassword = async (password) => {
+export const hashPassword = async (res, password) => {
   try {
     if (!password || typeof password !== "string") {
-      throw new Error("Invalid password provided for hashing.");
+      return ErrorHandler(res, 400, "Invalid password provided for hashing.");
     }
-    return bcrypt.hash(password, 12);
+
+    return await bcrypt.hash(password, SALT_ROUNDS);
   } catch (err) {
-    console.error("Error hashing password:", err.message);
-    throw new Error("Could not hash password.");
+    return ErrorHandler(res, 400, `Error hashing password: ${err.mesage}`);
   }
 };
 
-export const comparePassword = async (password, userHashPassword) => {
+export const comparePassword = async (res, password, userHashPassword) => {
   try {
     if (!password || !userHashPassword)
-      throw new Error("Provide Password and hash password");
+      return ErrorHandler(res, 400, "Provide Password and hash password");
 
     return await bcrypt.compare(password, userHashPassword);
   } catch (err) {
-    console.error("Error comparing passwords:", err.message);
-    throw new Error("Could not compare passwords.");
+    return ErrorHandler(res, 400, `Error comparing passwords: ${err.message}`);
   }
 };
